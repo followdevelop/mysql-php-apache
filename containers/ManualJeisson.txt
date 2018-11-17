@@ -1,0 +1,178 @@
+$_ --> el ultimo comando
+docker build -t ubuntu14.04/utils:0.0.2 .
+crear docker file -t algo/algo espacio punto
+
+exercise
+1. docker run \
+--name mysqlversion \
+-e MYSQL_ROOT_PASSWORD=secret \
+-e MYSQL_DATABASE=base_de_datos \
+-e MYSQL_USER=jeisson \
+-e MYSQL_PASSWORD=clave \
+-v $(pwd)/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d \
+-d \
+mysql:5.6.40
+
+1.2 
+docker run \
+       -it \
+       --link mysqlversion:mysql \
+       --rm \
+       mysql:5.6.40 \
+       sh -c 'exec mysql -h mysql -u root -pmi-clave-secreta'
+
+
+2. docker run \
+--name algun-adminer \
+--link mysqlversion:db \
+-p 8080:8080 \
+adminer
+3. docker exec -it mysqlversion mysql -uroot -psecret
+
+docker-machine ls
+docker-machine ip default
+docker port 29409f8390b7
+docker port 29409f8390b7 443
+docker top 23d0bc5a0f52
+docker logs -f 23d0bc5a0f52
+docker inspect 23d0bc5a0f52
+docker inspect -f "Host name: {{.Config.Hostname}}, Identificador: {{.ID}}" 23d0bc5a0f52
+docker stop
+doccker start
+ docker run -it ubuntu:14.04 bash
+root@c33a2339ca21:/#
+	root@c33a2339ca21:/# apt-get update
+	root@c33a2339ca21:/# apt-get install curl wget
+	root@c33a2339ca21:/# exit
+curl http://localhost
+docker exec -it 866b066b913a bash
+
+	mysql
+	docker run
+	name
+	link contenedor
+	rm
+	mysql:version
+
+mysql> create table tabla (
+identificador int primary key auto_increment,
+nombre varchar(45) not null
+);
+
+docker run \
+--name algun-adminer \
+--link mysqlversion:db \
+-p 8080:8080 \
+adminer
+
+
+
+mysql
+8.0.12
+docker run -v /home/ruta:/var/lib/mysql
+-p 3306:3306
+--name mysqlversion
+-e MYSQL_ROOT_PASSWORD=secret
+-d mysql:version
+--character-set-server=utf8
+--collation-server=utf8_unicode-cli
+
+docker exec -it mysqlversion mysql -uroot -p
+docker exec -it mysql8012 mysql -uroot -p
+
+
+
+
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+docker exec -it some-mysql bash
+
+docker run --name some-mysql -v 
+/my/custom:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+
+
+-------------------
+docker run -it --link some-mysql:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+
+
+postgres
+10-alpine
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+EXPOSE 5432
+
+
+odoo
+12.0
+docker run -d -e POSTGRES_USER=odoo 
+-e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:10
+
+docker run -p 8069:8069 --name odoo --link db:db -t odoo
+
+
+
+httpd
+2.4.35-alpine
+docker run -dit --name my-running-app -p 8080:80 my-apache2
+docker run -dit --name my-apache-app -p 8080:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4
+
+
+
+node
+8.12.0-alpine
+docker run -it --rm --name my-running-script -v "$PWD":/usr/src/app 
+-w /usr/src/app node:8 node your-daemon-or-script.js
+
+EXPOSE 8888
+docker run -it --rm --name prueba -v $(pwd):/usr/src/app 
+-w /usr/src/app node:10.11.0-alpine node TimeExcecutionReduce.js
+
+
+php
+7.3.0RC3-cli-alpine3.8
+docker run -it --rm --name my-running-script -v "$PWD":/usr/src/myapp 
+-w /usr/src/myapp php:7.2-cli php your-script.php
+
+docker run -d -p 80:80 --name my-apache-php-app -v "$PWD":/var/www/html php:7.2-apache
+
+---------------------
+
+
+jimmy
+
+# MySQL
+docker pull mysql:5.6.40
+docker rmi mysql:5.6.40       :elimina la imagen mysql
+docker run \
+       --name some-mysql \
+       -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+       -e MYSQL_DATABASE=base_de_datos \
+       -d \
+       mysql:5.6.40
+
+docker run \
+       -it \
+       --link some-mysql:mysql \
+       --rm \
+       mysql:5.6.40 \
+       sh -c 'exec mysql -h some-mysql -u root -pmy-secret-pw'
+
+
+
+mysql> show databases
+mysql> show tables;
+mysql> create table tabla (
+    identificador int primary key auto_increment,
+    nombre varchar(45) not null
+);
+mysql> desc tabla;
+exit
+
+
+docker run \
+       --name some-adminer \
+       --link some-mysql:db \
+       -p 8080:8080 \
+       adminer
+
+
+http://127.0.0.1:8080/
+---------------------------

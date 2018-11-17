@@ -1,0 +1,42 @@
+docker pull mysql:5.6.40
+
+docker rmi mysql:5.6.40  
+
+mkdir -p mysql/docker-entrypoint-initdb.d
+
+echo "create table tabla (
+ identificador int primary key auto_increment,
+ nombre varchar(45) not null
+);" > mysql/docker-entrypoint-initdb.d/base_de_datos.sql
+
+INSERT INTO tabla(identificador, nombre)
+VALUES ('1','jeisson');
+
+docker run \
+      --name algun-mysql \
+      -e MYSQL_ROOT_PASSWORD=mi-clave-secreta \
+      -e MYSQL_DATABASE=base_de_datos \
+      -e MYSQL_USER=usuario \
+      -e MYSQL_PASSWORD=clave \
+      -v $(pwd)/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d \
+      -d \
+      mysql:5.6.40
+
+docker run \
+      -it \
+      --link algun-mysql:mysql \
+      --rm \
+      mysql:5.6.40 \
+      sh -c 'exec mysql -h mysql -u usuario -p'
+
+mysql> create table `tabla` (
+ `identificador` int primary key auto_increment,
+ `nombre` varchar(45) not null
+);
+
+docker run \
+      --link algun-mysql:db \
+      --name algun-adminer \
+      -p 8080:8080 \
+      --rm \
+      adminer
